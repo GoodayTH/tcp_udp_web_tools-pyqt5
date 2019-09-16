@@ -15,7 +15,9 @@ class TcpLogic(tcp_udp_web_ui.ToolsUi):
         self.client_th = None
         self.client_socket_list = list()
 
-        self.link = False  # 用于标记是否开启了连接
+        self.link = False
+        # 用于标记是否开启了连接
+        # 연결이 되어있는지 확인
 
     def tcp_server_start(self):
         """

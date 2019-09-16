@@ -3,7 +3,8 @@ import tcp_logic, udp_logic, web_logic
 import socket
 import sys
 
-
+# TcpLogic, UdpLogic, WebLogic 상속
+# TcpLogic, UdpLogic, WebLogic는 모두 ToolsUi를 상속
 class MainWindow(tcp_logic.TcpLogic, udp_logic.UdpLogic, web_logic.WebLogic):
     def __init__(self, num):
         super(MainWindow, self).__init__(num)
@@ -12,6 +13,7 @@ class MainWindow(tcp_logic.TcpLogic, udp_logic.UdpLogic, web_logic.WebLogic):
         self.link = False
 
         # 打开软件时默认获取本机ip
+        # PC의 ip를 받아온다.
         self.click_get_ip()
 
     def connect(self, ):
@@ -65,22 +67,28 @@ class MainWindow(tcp_logic.TcpLogic, udp_logic.UdpLogic, web_logic.WebLogic):
     def click_get_ip(self):
         """
         pushbutton_get_ip控件点击触发的槽
+        get_ip를 클릭
         :return: None
         """
         # 获取本机ip
+        # 현재 PC의 ip를 받는다.
         self.lineEdit_ip_local.clear()
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
+            # 초기 아래에 설정된 8.8.8.8:80로 접속을 시도하고 안되면 Exception
+            # 대부분 Exception이겠지?
             s.connect(('8.8.8.8', 80))
             my_addr = s.getsockname()[0]
             self.lineEdit_ip_local.setText(str(my_addr))
         except Exception as ret:
             # 若无法连接互联网使用，会调用以下方法
+            # 인터넷에 연결할 수 없으면 아래가 실행
             try:
                 my_addr = socket.gethostbyname(socket.gethostname())
                 self.lineEdit_ip_local.setText(str(my_addr))
             except Exception as ret_e:
-                self.signal_write_msg.emit("无法获取ip，请连接网络！\n")
+                # self.signal_write_msg.emit("无法获取ip，请连接网络！\n")
+                self.signal_write_msg.emit("ip를 얻을 수 없습니다. 인터넷 연결을 확인하세요！\n")
         finally:
             s.close()
 
@@ -136,16 +144,21 @@ class MainWindow(tcp_logic.TcpLogic, udp_logic.UdpLogic, web_logic.WebLogic):
     def another_window(self):
         """
         开启一个新的窗口的方法
+        새 창 열기
         :return:
         """
         # 弹出一个消息框，提示开启了一个新的窗口
         QtWidgets.QMessageBox.warning(self,
-                                      'TCP/UDP网络测试助手',
-                                      "已经开启了新的TCP/UDP网络测试助手！",
+                                      #'TCP/UDP网络测试助手',
+                                      'TCP/UDP접속'
+                                      #"已经开启了新的TCP/UDP网络测试助手！",
+                                        "새 TCP/UDP 다이얼로그를 엽니다.",
                                       QtWidgets.QMessageBox.Yes)
         # 计数，开启了几个窗口
+        # 다이얼로그 개수 카운트
         self.num = self.num + 1
         # 开启新的窗口
+        # 새 창을 연다.
         self.another = MainWindow(self.num)
         self.another.show()
 
