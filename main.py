@@ -150,9 +150,9 @@ class MainWindow(tcp_logic.TcpLogic, udp_logic.UdpLogic, web_logic.WebLogic):
         # 弹出一个消息框，提示开启了一个新的窗口
         QtWidgets.QMessageBox.warning(self,
                                       #'TCP/UDP网络测试助手',
-                                      'TCP/UDP접속'
+                                      'TCP/UDP접속',
                                       #"已经开启了新的TCP/UDP网络测试助手！",
-                                        "새 TCP/UDP 다이얼로그를 엽니다.",
+                                      "새 TCP/UDP 다이얼로그를 엽니다.",
                                       QtWidgets.QMessageBox.Yes)
         # 计数，开启了几个窗口
         # 다이얼로그 개수 카운트
